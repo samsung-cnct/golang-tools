@@ -1,7 +1,7 @@
 # goglide-container
 
 ## Purpose
-Creates a container with golang and adds the glide package manager.
+Creates a container with golang and adds the [glide package manager](https://github.com/Masterminds/glide).
 
 
 ## Versions
