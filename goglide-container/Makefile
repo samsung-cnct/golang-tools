@@ -3,7 +3,7 @@
 #
 # This makefile assumes that docker is installed
 #
-# 3/12/2015 mln
+# 5/5/2016 mln
 #
 VERSION := 0.0.2
 #
