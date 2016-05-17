@@ -5,7 +5,7 @@
 #
 # 5/5/2016 mln
 #
-VERSION := 0.0.2
+VERSION := 0.0.6
 #
 # do some repo evals... want everyone to use their own, unless building for the team
 #
@@ -38,7 +38,7 @@ build-all: build-app
 
 build-app: $(DOCKER_IMAGE)
 
-$(DOCKER_IMAGE): Dockerfile 
+$(DOCKER_IMAGE): Dockerfile  entrypoint.sh
 	@echo "building app $(VERSION)"
 	#
 	docker build -f Dockerfile -t $(REPO)/$(DOCKER_IMAGE):$(VERSION) --rm=true --force-rm=true .
