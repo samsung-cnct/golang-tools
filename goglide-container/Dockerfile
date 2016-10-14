@@ -1,8 +1,8 @@
-FROM golang:1.6
+FROM golang:1.7.1
 MAINTAINER Mikel Nelson <github@mikelnelson.net>
 
 # NOTE: should use: $(dpkg --print-architecture)  vs amd64
-ENV GLIDE_VERSION 0.10.2
+ENV GLIDE_VERSION v0.12.3
 ENV GLIDE_URL https://github.com/Masterminds/glide/releases/download/$GLIDE_VERSION/glide-$GLIDE_VERSION-linux-amd64.tar.gz
 ENV GOSU_VERSION 1.9
 ENV GOSU_URL https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-amd64

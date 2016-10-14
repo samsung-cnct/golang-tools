@@ -5,7 +5,7 @@
 #
 # 5/5/2016 mln
 #
-VERSION := 0.0.6
+VERSION := 0.1.7
 #
 # do some repo evals... want everyone to use their own, unless building for the team
 #
