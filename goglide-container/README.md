@@ -8,9 +8,9 @@ Also sets the container uid:gid.
 ## Versions
 (Update Makefile and Dockerfile when versions need to change)
 
-* golang 1.6 - set in Dockerfile FROM base image
-* glide 0.10.2 - set in Dockerfile GLIDE_VERSION
-* goglide (container) 0.0.6 - set in Makefile $VERSION
+* golang 1.7.1 - set in Dockerfile FROM base image
+* glide 0.12.3 - set in Dockerfile GLIDE_VERSION
+* goglide (container) 0.1.7 - set in Makefile $VERSION
 
 ## Build
 * docker-machine (or some form of docker) running.
