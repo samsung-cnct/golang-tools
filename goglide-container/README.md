@@ -50,7 +50,7 @@ docker run \
         -w /go${build_dir} \
         -e VERSION=${BUILD_VERSION} \
         -e LOCAL_USER=$USER \
-        quay.io/samsung_cnct/goglide:0.0.6 \
+        quay.io/samsung_cnct/goglide:0.1.7 \
         make --file ${MAKEFILE_NAME} ${MAKE_ARGS};"
 ````
 Set to the current username, gid, and uid.
@@ -65,7 +65,7 @@ docker run \
         -e LOCAL_USER=$USER \
         -e LOCAL_USER_ID=1000 \
         -e LOCAL_GRP_ID=50 \
-        quay.io/samsung_cnct/goglide:0.0.6 \
+        quay.io/samsung_cnct/goglide:0.1.7 \
         make --file ${MAKEFILE_NAME} ${MAKE_ARGS};"
 ````
 	
