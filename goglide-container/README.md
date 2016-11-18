@@ -38,7 +38,11 @@ docker container: uid: MyLogin(1000) gid: staff(50)
 ````
 Note: it seems that only the uid:gid matter, and sometimes the username, but not the group name.
 
-### Example Usage
+### How to Use This Container
+
+See https://hub.docker.com/_/golang/ for the basics of how it works. Then the following examples for the additions in this container.
+
+#### Example Usage
 
 Set to the current username, default the uid:gid to fs values.
 
