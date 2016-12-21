@@ -10,6 +10,7 @@ Also sets the container uid:gid.
 
 * golang 1.7.1 - set in Dockerfile FROM base image
 * glide 0.12.3 - set in Dockerfile GLIDE_VERSION
+* gosu 1.10 - set in Dockerfile GOSU_VERSION
 * goglide (container) 0.1.7 - set in Makefile $VERSION
 
 ## Build
