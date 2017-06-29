@@ -7,7 +7,10 @@ ENV GLIDE_URL https://github.com/Masterminds/glide/releases/download/$GLIDE_VERS
 ENV GOSU_VERSION 1.9
 ENV GOSU_URL https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-amd64
 ENV GOSU_PATH /usr/local/bin/gosu
-
+#
+# TRASH is a rancher/trash project.  Minimize golang dependency tool
+ENV TRASH_VERSION v0.2.5
+ENV TRASH_URL https://github.com/rancher/trash/releases/download/$TRASH_VERSION/trash-linux_amd64.tar.gz
 #
 # Luckily golang container has curl and ca-certificates installed already, so we don't need apt-get for anything.
 # Just need to add in glide for golang dependency management.
@@ -25,6 +28,11 @@ RUN curl -L "$GOSU_URL" -o "$GOSU_PATH" \
 	&& gpg --verify "$GOSU_PATH.asc" \
 	&& rm "$GOSU_PATH.asc" \
 	&& chmod +x "$GOSU_PATH"
+
+RUN curl -L "$TRASH_URL" -o trash.tgz \
+	&& tar xzvf trash.tgz \
+	&& mv ./trash /usr/local/bin \
+	&& rm trash.tgz 
 
 #
 # entrypoint script to set the container user to host user
