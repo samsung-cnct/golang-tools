@@ -45,7 +45,12 @@ See https://hub.docker.com/_/golang/ for the basics of how it works. Then the fo
 
 #### Example Usage
 
-Set to the current username, default the uid:gid to fs values.
+Start and interactive golang container using the current directory.
+````
+docker run --rm --name golang-build-container -v $PWD:/go -it quay.io/samsung_cnct/goglide:1.8.3 bash
+````
+
+Set to the current username, default the uid:gid to fs values and running a Makefile.
 
 ````
 docker run \
@@ -58,7 +63,7 @@ docker run \
         quay.io/samsung_cnct/goglide:1.8.3 \
         make --file ${MAKEFILE_NAME} ${MAKE_ARGS};"
 ````
-Set to the current username, gid, and uid.
+Set to the current username, gid, and uid and running a Makefile.
 
 ````
 docker run \
