@@ -8,10 +8,10 @@ Also sets the container uid:gid.
 ## Versions
 (Update Makefile and Dockerfile when versions need to change)
 
-* golang 1.7.1 - set in Dockerfile FROM base image
+* golang 1.8.3 - set in Dockerfile FROM base image
 * glide 0.12.3 - set in Dockerfile GLIDE_VERSION
 * gosu 1.10 - set in Dockerfile GOSU_VERSION
-* goglide (container) 0.1.7 - set in Makefile $VERSION
+* goglide (container) 1.8.3 - set in Makefile $VERSION
 
 ## Build
 * docker-machine (or some form of docker) running.
@@ -55,7 +55,7 @@ docker run \
         -w /go${build_dir} \
         -e VERSION=${BUILD_VERSION} \
         -e LOCAL_USER=$USER \
-        quay.io/samsung_cnct/goglide:0.1.7 \
+        quay.io/samsung_cnct/goglide:1.8.3 \
         make --file ${MAKEFILE_NAME} ${MAKE_ARGS};"
 ````
 Set to the current username, gid, and uid.
@@ -70,7 +70,7 @@ docker run \
         -e LOCAL_USER=$USER \
         -e LOCAL_USER_ID=1000 \
         -e LOCAL_GRP_ID=50 \
-        quay.io/samsung_cnct/goglide:0.1.7 \
+        quay.io/samsung_cnct/goglide:1.8.3 \
         make --file ${MAKEFILE_NAME} ${MAKE_ARGS};"
 ````
 	
