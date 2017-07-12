@@ -1,7 +1,7 @@
-# Barrel
+# Example Golang Project
 
 ###### Mikel Nelson (3/2016)
-Chutes and Barrels Test error injection (chaos monkey impl)
+Example golang project to start with.
 
 ## Initial Demo
 **./demo01** directory contains the initial kubernetes demo proof of concept.  This is a stand alone subdirectory and not connected to anything else in this directory.
@@ -32,7 +32,7 @@ The golang *main* and *cmd* pkgs are build using the [cobra](https://github.com/
 When doing development, the git repository HAS to be set up as follows:
 
 ````
-$(GOPATH)/src/github.com/samsung-cnct/barrel
+$(GOPATH)/src/github.com/samsung-cnct/<your project>
 ````
 How to:
 
@@ -41,7 +41,7 @@ $ export GOPATH=<whatever base path you want>
 $ cd $(GOPATH)
 $ mkdir -p src/github.com/samsung-cnct
 $ cd src/github.com/samsung-cnct
-$ git clone <your fork of samsung-cnct/barrel>
+$ git clone <your fork of samsung-cnct/<your project>>
 ````
 golang build results:
 
@@ -51,12 +51,12 @@ $(GOPATH)
          /pkg
          /doc
          /src <see above>
-         /src/github.com/samsung-cnct/barrel/vendor <managed by glide>
+         /src/github.com/samsung-cnct/<your project>/vendor <managed by glide or whatever dependency manager is in vogue>
 ````
 
 #### Build
 
-Prerequisites: docker running on your machine. (docker-machine, boot2docker, etc)
+Prerequisites: docker running on your machine. (os-x docker, docker-machine, boot2docker, etc)
 
 Build execution:
 
@@ -150,12 +150,7 @@ Rules here: [DEVELOPMENT](DEVELOPMENT.md)
 ## Running
 Information for running the app here: [COMMANDS](COMMANDS.md)
 
-## First golang Version Demo
-**./_visualizer** Contains the initial rudimentary results dashboard that queries the webservice for testing status.
 
-**github.com/samsung-cnct/kraken-services/podpincher** was used as the Kubernetes visuaizer.
-
-**github.com/samsung-cnct/cassandra-container/kubernetes** was used as the cluster app.
 
 
 
