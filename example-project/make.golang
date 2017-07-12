@@ -22,7 +22,7 @@ IMAGE_NAME := exampleapp
 # avoid checking etc the vendor dir
 #
 NOVENDOR := $(shell glide novendor)
-PKGS := "./apkg"
+PKGS := "./cmd ./apkg"
 #
 # find the certs.  use the first location found
 #
@@ -73,10 +73,13 @@ build-darwin: repo-warning-in vet
 test: vet lint
 	go test -cover -v $(LDFLAGS) $(NOVENDOR)
 
-test-all: test-apkg
+test-all: test-apkg test-cmd
 
 test-apkg: repo-warning-in vet lint
 	go test -race -v $(LDFLAGS) ./apkg/...
+
+test-cmd: repo-warning-in vet lint
+	go test -race -v $(LDFLAGS) ./cmd/...
 
 cover-runner: repo-warning-in
 	go test -covermode=count -coverprofile=coverage.out ./apkg
@@ -98,6 +101,7 @@ vet:
 
 doc:
 	godoc ./apkg
+	godoc ./cmd
 	#godoc -http=:6060 -index
 
 lint:
