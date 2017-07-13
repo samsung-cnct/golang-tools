@@ -32,7 +32,7 @@ The golang *main* and *cmd* pkgs are build using the [cobra](https://github.com/
 When doing development, the git repository HAS to be set up as follows:
 
 ````
-$(GOPATH)/src/github.com/samsung-cnct/barrel
+$(GOPATH)/src/github.com/samsung-cnct/example-proj
 ````
 How to:
 
@@ -41,7 +41,7 @@ $ export GOPATH=<whatever base path you want>
 $ cd $(GOPATH)
 $ mkdir -p src/github.com/samsung-cnct
 $ cd src/github.com/samsung-cnct
-$ git clone <your fork of samsung-cnct/barrel>
+$ git clone <your fork of samsung-cnct/example-proj>
 ````
 golang build results:
 
@@ -51,7 +51,7 @@ $(GOPATH)
          /pkg
          /doc
          /src <see above>
-         /src/github.com/samsung-cnct/barrel/vendor <managed by glide>
+         /src/github.com/samsung-cnct/example-proj/vendor <managed by glide>
 ````
 
 #### Build
@@ -90,13 +90,13 @@ Build execution:
 > -h, -?, --help :: print usage
 > -f, --file :: golang make file name (make.golang)
 > -k, --kube :: Direct make commands to _containerize/Makefile
-> -m, --machine :: VM machine name, overrides DOCKER_MACHINE_NAME (barrel-build)
+> -m, --machine :: VM machine name, overrides DOCKER_MACHINE_NAME (example-proj-build)
 > -v, --version :: print script verion
 > -vv, --verbose :: more debug
 >
 > Env Vars:
 > DOCKER_MACHINE_DRIVER :: (virtualbox)
-> DOCKER_MACHINE_NAME :: (barrel-build) or set via argument
+> DOCKER_MACHINE_NAME :: (example-proj-build) or set via argument
 > 
 ````
 ##### make.golang
