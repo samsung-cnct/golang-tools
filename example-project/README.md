@@ -3,13 +3,8 @@
 ###### Mikel Nelson (3/2016)
 Example golang project to start with.
 
-## Initial Demo
-**./demo01** directory contains the initial kubernetes demo proof of concept.  This is a stand alone subdirectory and not connected to anything else in this directory.
-
-Read me here: [README](/demo01/README.md)
-
-## golang Version
-All items (except **./demo01**) are associated with the golang implementation.  
+### Purpose
+This is presented to be a source of a framework that can be used to populate a new golang project repo.  As such, it is not runnable as is.   You must copy this into your repo and rename items appropriately.
 
 ### Summary
 The goal is to have this "*go get-able*" so it is usable by other golang projects.
@@ -18,6 +13,9 @@ The goal is to have this "*go get-able*" so it is usable by other golang project
 This is setup to use a golang docker container to do all golang "go" commands.  The current directory is mounted into the container, but at a location that facilitates "*go get*". 
 
 ### Dependency Management
+The hope is to use whatever the current best practice dependency manager is.  Howeever, at the time of this update (1/2017) managing the dependencies in /vendor by hand and checking them in to source control was determined to be the most reliable.  
+
+DEPRECATED BELOW...but may be relavent again:
 It has been determined to use [glide](https://github.com/Masterminds/glide) as the package management tools.  A special docker golang build image has been created (see [samsung-cnct/golang-tools/goglide-container](https://github.com/samsung-cnct/golang-tools/tree/master/goglide-container) ).
 
 ### main/cmd Management
@@ -113,9 +111,9 @@ Targets:
 
 Dependency Management (if /vendor dir is not checked-in):
 
-* `dep`
-* `dep-update`
-* `dep-update-quick`
+* `dep`         - currently not implemented
+* `dep-update`         - currently not implemented
+* `dep-update-quick`         - currently not implemented
 
 Minor Targets
 
@@ -127,12 +125,7 @@ Minor Targets
 `main.go`
 
 * `./cmd` (CLI managed by corbra)
-* `./core` 
-* `./kubernetes`
-* `./kubernetes/v3/client` (low level kubernetes API usage)
-* `./kubernetes/podattack` (usable abstraction of low level)
-* `./runner`
-* `./web` (webservice)
+* `./apkg` 
 
 ### Initial Development Setup
 * Create the dev area and clone the repo (outlined above)
