@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/samsung-cnct/barrel/core"
+	"github.com/samsung-cnct/example-project/apkg"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

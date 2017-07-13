@@ -90,13 +90,13 @@ Build execution:
 > -h, -?, --help :: print usage
 > -f, --file :: golang make file name (make.golang)
 > -k, --kube :: Direct make commands to _containerize/Makefile
-> -m, --machine :: VM machine name, overrides DOCKER_MACHINE_NAME (barrel-build)
+> -m, --machine :: VM machine name, overrides DOCKER_MACHINE_NAME (example-proj-build)
 > -v, --version :: print script verion
 > -vv, --verbose :: more debug
 >
 > Env Vars:
 > DOCKER_MACHINE_DRIVER :: (virtualbox)
-> DOCKER_MACHINE_NAME :: (barrel-build) or set via argument
+> DOCKER_MACHINE_NAME :: (example-proj-build) or set via argument
 > 
 ````
 ##### make.golang
