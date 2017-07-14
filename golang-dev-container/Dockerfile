@@ -14,11 +14,15 @@ RUN go get \
     golang.org/x/tools/cmd/godoc \
     golang.org/x/tools/cmd/goimports \
     github.com/golang/lint/golint \
-    honnef.co/go/tools/cmd/gosimple
+    honnef.co/go/tools/cmd/gosimple \
+    github.com/tools/godep
+
+    
 
 
 RUN mkdir -p /usr/local/bin/
-COPY ./dev_golang.sh /usr/local/bin/
+COPY ./scripts/dev_golang_lib.sh /scripts/
+COPY ./scripts/dev_golang.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/*.sh
 
 VOLUME ["/go/"]
