@@ -75,45 +75,45 @@ The following test cases perform identically with both styles, for comparison.
 package main
 
 import (
-	"strings"
-	"testing"
+    "strings"
+    "testing"
 )
 
 func TestMyCode(t *testing.T) {
 
 
-	dosomething := func(text string) string {
-		return strings.ToUpper(text)
-	}
+    dosomething := func(text string) string {
+        return strings.ToUpper(text)
+    }
 
-	cases := map[string]struct {
-		input    string
-		expected string
-		result   string
-	}{
-		"First":  {"a", "A", dosomething("a")},
-		"Second": {"b", "B", dosomething("b")},
-		"Third":  {"c", "C", dosomething("c")},
-	}
+    cases := map[string]struct {
+        input    string
+        expected string
+        result   string
+    }{
+        "First":  {"a", "A", dosomething("a")},
+        "Second": {"b", "B", dosomething("b")},
+        "Third":  {"c", "C", dosomething("c")},
+    }
 
-	for key, pair := range cases {
+    for key, pair := range cases {
         if pair.expected != pair.result {
-			t.Errorf("Test failed: %s; (%v != %v)", key, pair.expected, pair.result)
-		}
-	}
+            t.Errorf("Test failed: %s; (%v != %v)", key, pair.expected, pair.result)
+        }
+    }
 }
 
 func TestMyCode_Assert(t *testing.T) {
 
-	assertEqual := func(a, b interface{}, message string) {
-		if a != b {
-			t.Errorf("Test failed: %s; (%v != %v)", message, a, b)
-		}
-	}
+    assertEqual := func(a, b interface{}, message string) {
+        if a != b {
+            t.Errorf("Test failed: %s; (%v != %v)", message, a, b)
+        }
+    }
 
-	dosomething := func(text string) string {
-		return strings.ToUpper(text)
-	}
+    dosomething := func(text string) string {
+        return strings.ToUpper(text)
+    }
 
     assertEqual("a", "A", dosomething("a"), "First")
     assertEqual("b", "B", dosomething("b"), "Second")
