@@ -1,4 +1,5 @@
-.PHONY: all biuld-all build-app repo-warning-in clean-app clean vet clean-all lint test-all view-all-coverage
+.PHONY: all build-all build-app build-darwin repo-warning-in clean-app clean doc vet clean-all lint test-all view-all-coverage
+.SUFFIXES:
 #
 # This is the Makefile to build the golang components.
 # It is normally run in a docker container for golang builds.
