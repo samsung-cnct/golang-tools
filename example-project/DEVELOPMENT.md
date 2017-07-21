@@ -67,7 +67,7 @@ embedding the assertion methods within the Test function is advisable, or at
 least in the same file, to reduce "cognitive load" and provide all available 
 context for the next developer who will read your code.
 
-The following test cases perform identicially with both styles, for comparison.
+The following test cases perform identically with both styles, for comparison.
 
 
 ```golang
