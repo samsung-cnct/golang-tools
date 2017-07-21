@@ -125,9 +125,9 @@ func TestMyCode_Assert(t *testing.T) {
         return strings.ToUpper(text)
     }
 
-    assertEqual("a", "A", dosomething("a"), "First")
-    assertEqual("b", "B", dosomething("b"), "Second")
-    assertEqual("c", "C", dosomething("c"), "Third")
+    assertEqual("A", dosomething("a"), "First")
+    assertEqual("B", dosomething("b"), "Second")
+    assertEqual("C", dosomething("c"), "Third")
 
 }
 
