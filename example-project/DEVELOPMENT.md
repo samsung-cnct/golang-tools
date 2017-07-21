@@ -3,7 +3,17 @@
 ###### Mikel Nelson (6/2017)
 Example golang project set up
 
-## Docs
+Table of Contents
+
+* [Documentation](#documentation)
+* [Tests](#tests)
+    * [Testing Style](#testing-style)
+    * [Designing for Testing](#designing-for-testing)
+    * [Assertion Style Tests](#assertion-style-tests)
+* [Dependencies](#dependencies)
+* [Development Helpers](#development-helpers)
+
+## Documentation
 ### Rules
 * Every file should have the License and Copyright at the top.
 * Every pkg should have a `doc.go` file that has the `copyright - blank line - package description - then package <blah>` only. Then every other file in the package will not have the package description.
