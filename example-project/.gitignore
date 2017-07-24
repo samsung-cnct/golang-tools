@@ -32,3 +32,5 @@ coverage.out
 coverage.html
 coverage-all.out
 coverage-all.html
+
+exampleapp*

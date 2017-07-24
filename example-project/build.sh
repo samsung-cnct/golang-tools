@@ -50,7 +50,7 @@ function gexample::build::validate_tree {
     # validate the required source installation
     #
     #EXPECTED_BUILD_PATH="/src/github.com/samsung-cnct/golang-tools/example-project"
-    EXPECTED_BUILD_PATH="/github.com/samsung-cnct/golang-tools/example-project"
+    EXPECTED_BUILD_PATH="/src/github.com/samsung-cnct/golang-tools/example-project"
 
     if [ "${1}" != "${EXPECTED_BUILD_PATH}" ]; then
         gexample::build::error "Expected build path ${EXPECTED_BUILD_PATH} not found."
@@ -70,8 +70,20 @@ unset CDPATH
 
 # XXX: this won't work if the last component is a symlink
 my_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-git_dir=$( cd "$( dirname "${my_dir}/.." )" && pwd)
-go_dir=$( cd "$( dirname "${my_dir}/../../../../.." )" && pwd)
+#
+# NOTE: these need to get back to the base of this git repo directory.
+#       This example is one extra directory level deeper than
+#       a normal project.  Please adjust accordingly.
+#       e.g.
+#git_dir=$( cd "$( dirname "${my_dir}/.." )" && pwd)
+git_dir=$( cd "$( dirname "${my_dir}/../.." )" && pwd)
+#
+# NOTE: these need to get back to the ./src directory.
+#       This example is one extra directory level deeper than
+#       a normal project.  Please adjust accordingly.
+#       e.g.
+#go_dir=$( cd "$( dirname "${my_dir}/../../../../.." )" && pwd)
+go_dir=$( cd "$( dirname "${my_dir}/../../../../../.." )" && pwd)
 build_dir=$( echo ${my_dir#$go_dir})
 
 #

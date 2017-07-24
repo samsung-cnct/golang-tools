@@ -17,7 +17,7 @@ limitations under the License.
 package main
 
 import (
-	"github.com/samsung-cnct/example-project/cmd"
+	"github.com/samsung-cnct/golang-tools/example-project/cmd"
 )
 
 var (

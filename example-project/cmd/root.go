@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/samsung-cnct/example-project/apkg"
+	"github.com/samsung-cnct/golang-tools/example-project/apkg"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -43,7 +43,7 @@ injector and monitor.
 It attempts to be easily extensible.`,
 
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		core.Verbose = Verbose
+		apkg.Verbose = Verbose
 	},
 
 	Run: func(cmd *cobra.Command, args []string) {
