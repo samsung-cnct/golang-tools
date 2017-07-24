@@ -55,7 +55,7 @@ build-all: build-app  build-darwin
 #
 build-app: repo-warning-in  $(CONTAINER_PATH)/$(IMAGE_NAME)-linux $(CERTS_DEST)
 	
-$(CONTAINER_PATH)/$(DOCKER_IAMGE)-linux: vet main.go
+$(CONTAINER_PATH)/$(IMAGE_NAME)-linux: vet main.go
 	env CGO_ENABLED=0 GOOS=linux go build -v $(LDFLAGS) -o $@ main.go
 
 $(CERTS_DEST):

@@ -85,16 +85,18 @@ Build execution:
 > ./build.sh [flags] -- [Makefile Args]
 >
 > Flags:
-> -h, -?, --help :: print usage
 > -f, --file :: golang make file name (make.golang)
-> -k, --kube :: Direct make commands to _containerize/Makefile
-> -m, --machine :: VM machine name, overrides DOCKER_MACHINE_NAME (example-proj-build)
+> -h, -?, --help :: print usage
+> -i, --int :: start an interactive shell
+> -k, --kube :: route Makefile args to container build
+> -m, --machine :: VM machine name, overrides DOCKER_MACHINE_NAME (gexample-build)
+> -t, -test :: Test Docker Detection
 > -v, --version :: print script verion
 > -vv, --verbose :: more debug
->
+
 > Env Vars:
-> DOCKER_MACHINE_DRIVER :: (virtualbox)
-> DOCKER_MACHINE_NAME :: (example-proj-build) or set via argument
+> DOCKER_MACHINE_DRIVER :: (virtualbox) [optional]
+> DOCKER_MACHINE_NAME :: (gexample-build) or set via argument [optional]
 > 
 ````
 ##### make.golang
@@ -137,11 +139,12 @@ Minor Targets
 * Create and push docker image: `build.sh --kube -- all push`
 
 ## Development Rules
-
+(example information to create)
 Rules here: [DEVELOPMENT](DEVELOPMENT.md)
 
 ## Running
-Information for running the app here: [COMMANDS](COMMANDS.md)
+(example information to create)
+Information for running the app here: [COMMANDS](COMMANDS.md) 
 
 
 
