@@ -5,7 +5,14 @@
 # The current dictory is mounted to the docker container and 
 # make -f make.golang is executed passing any additional arguments 
 # that where supplied to this script.
+#    
 #
+# ATTENTION! ATTENTION! ATTENTION! ATTENTION! 
+#
+# If you are creating a new project based on this, you MUST fix the locations below 
+# marked with ATTENTION! (there are 3 locations)
+#
+
 
 SCRIPT_VERSION="4.0"
 
@@ -49,7 +56,13 @@ function gexample::build::validate_tree {
     #
     # validate the required source installation
     #
-    #EXPECTED_BUILD_PATH="/src/github.com/samsung-cnct/golang-tools/example-project"
+    # ATTENTION!
+    #
+    # NOTE: You MUST set you project name correctly here.
+    #       This example is one extra directory level deeper than
+    #       a normal project.  Please adjust accordingly.
+    #       e.g. you probably want the following:
+    #EXPECTED_BUILD_PATH="/src/github.com/samsung-cnct/YOUR-PROJECT"
     EXPECTED_BUILD_PATH="/src/github.com/samsung-cnct/golang-tools/example-project"
 
     if [ "${1}" != "${EXPECTED_BUILD_PATH}" ]; then
@@ -71,17 +84,23 @@ unset CDPATH
 # XXX: this won't work if the last component is a symlink
 my_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 #
+#
+# ATTENTION!
+#
 # NOTE: these need to get back to the base of this git repo directory.
 #       This example is one extra directory level deeper than
 #       a normal project.  Please adjust accordingly.
-#       e.g.
+#       e.g. you probably want the following:
 #git_dir=$( cd "$( dirname "${my_dir}/.." )" && pwd)
 git_dir=$( cd "$( dirname "${my_dir}/../.." )" && pwd)
+#
+#
+# ATTENTION!
 #
 # NOTE: these need to get back to the ./src directory.
 #       This example is one extra directory level deeper than
 #       a normal project.  Please adjust accordingly.
-#       e.g.
+#       e.g. you probably want the following:
 #go_dir=$( cd "$( dirname "${my_dir}/../../../../.." )" && pwd)
 go_dir=$( cd "$( dirname "${my_dir}/../../../../../.." )" && pwd)
 build_dir=$( echo ${my_dir#$go_dir})
