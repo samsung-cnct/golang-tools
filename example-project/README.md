@@ -11,11 +11,17 @@ This example project is designed to be copied directly into your base repository
 There are 3 locations in the file `build.sh` that you must edit to correct for your repository name and relative depth.   These locations are marked with `ATTENTON!`.  The comments in `build.sh` explain this also.
 
 ### Step 3 - Fix the Makefile
-You must change the `VERSION` to match your version scheme.
-You must change the `DOCKER_IMAGE` to match you project executable/conatianer name.
-It is recommended that you do NOT change `DEFAULT_REPO` and require anyone building this to set `DOCKER_REPO` in their environment variables.  e.g. `export DOCKER_REPO=quay.io/myaccnt`
+* You must change the `VERSION` to match your version scheme.
+* You must change the `DOCKER_IMAGE` to match you project executable/conatianer name.
+* It is recommended that you do NOT change `DEFAULT_REPO` and require anyone building this to set `DOCKER_REPO` in their environment variables.  e.g. `export DOCKER_REPO=quay.io/myaccnt`
 
-### Step 3 - Correct/Update These Files
+### Step 4 - Fix make.golang
+`make.golang` is the real Makefile for this app.  You will add your paths targets to this file as needed.   It is a starting point.   The following should be initially updated:
+
+* `VERSION` should be set to your version
+* `IMAGE_NAME` should be set to your desired app name
+
+### Final Step - Correct/Update These Files
 You should update/correct `README.md` and `DEVELOPMENT.md` as needed, correcting names etc.  You should also delete this whole **HOW TO CREATE YOUR PROJECT FROM THIS COPY** section here.
 ## END OF HOW TO CREATE YOUR PROJECT SECTION
 
