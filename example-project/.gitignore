@@ -27,6 +27,7 @@ _testmain.go
 bin/*
 docs/*
 #vendor/*
+.glide
 
 coverage.out
 coverage.html
