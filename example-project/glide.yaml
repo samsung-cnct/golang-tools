@@ -1,0 +1,10 @@
+package: .
+import:
+- package: github.com/samsung-cnct/barrel
+  subpackages:
+  - core
+- package: github.com/samsung-cnct/example-project
+  subpackages:
+  - cmd
+- package: github.com/spf13/cobra
+- package: github.com/spf13/viper

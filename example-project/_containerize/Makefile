@@ -19,8 +19,8 @@ DOCKER_REPO ?= $(DEFAULT_REPO)
 REPO := $(DOCKER_REPO)
 #
 #
-DOCKER_IMAGE := example-img
-SOURCE_APP := example-linux
+DOCKER_IMAGE := exampleapp-img
+SOURCE_APP := exampleapp-linux
 
 repo-warning:
 	@echo "============================================================="
