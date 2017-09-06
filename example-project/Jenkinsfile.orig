@@ -1,0 +1,111 @@
+//
+// Example Golang build with docker image and push
+//
+//  This version uses sh() instead of kubesh().  This should work if the odd kubernetes bug is fixed
+//  NOTE: Keep this version in line with Jenkinsfile.orig
+//
+// Configuration variables
+github_org             = "samsung-cnct"
+quay_org               = "samsung_cnct"
+quay_push_org          = "bogus"
+//quay_push_org          = "samsung_cnct"
+golang_project_name    = "golang-tools"
+golang_project_path    = "src/github.com/${github_org}/${golang_project_name}"
+
+podTemplate(label: 'example-proj', containers: [
+    containerTemplate(name: 'jnlp', image: "quay.io/${quay_org}/custom-jnlp:0.1", args: '${computer.jnlpmac} ${computer.name}'),
+    containerTemplate(name: 'goglide', image: "quay.io/${quay_org}/goglide:1.8.3", ttyEnabled: true, command: 'cat' ),
+    containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true)
+  ], volumes: [
+    hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
+    hostPathVolume(hostPath: '/var/lib/docker/scratch', mountPath: '/mnt/scratch'),
+    // The Following is needed to push to quay
+    secretVolume(mountPath: '/home/jenkins/.docker/', secretName: 'samsung-cnct-quay-robot-dockercfg')
+  ]) {
+    node('example-proj') {
+       container('goglide') {
+          // NOTE: the current WORKSPACE is the correct value for the GOPATH, we will use that in later steps
+          //       We will put the go project in the correct location relative to our WORKSPACE (i.e. GOPATH)
+          dir("${golang_project_path}") {
+             stage('Checkout') {
+                checkout scm
+                // retrieve the URI used for checking out the source
+                // this assumes one branch with one uri
+                git_uri = scm.getRepositories()[0].getURIs()[0].toString()
+             }
+             // Check the golang project.  
+             // NOTE: none of these steps abort the pipeline by default.  But do provide info into the log
+             //      Dumping a lot of info into the log for visibility
+             stage('vet') {
+                 echo WORKSPACE
+                 echo pwd()
+                 sh(" \
+                     whoami; \
+                     df -h;  \
+                     export GOPATH=${WORKSPACE}; \
+                     export PATH=\$GOPATH/bin:\$PATH; \
+                     env|sort; \
+                     echo \"shell var \$GOPATH\"; \
+                     cd example-project; \
+                     echo \"=== go env ===\"; \
+                     go env; \
+                     make --version; \
+                     make --no-builtin-rules --file make.golang vet lint; \
+                  ")
+             }
+             // In golang we Unit test before we build the complete app
+             stage('unit-test') {
+                 sh(" \
+                     export GOPATH=${WORKSPACE}; \
+                     export PATH=\$GOPATH/bin:\$PATH; \
+                     cd example-project; \
+                     make --no-builtin-rules --file make.golang test; \
+                  ")
+             }
+             // build the complete app (make puts the output into the correct location for the container build)
+             stage('build') {
+                 sh(" \
+                     export GOPATH=${WORKSPACE}; \
+                     export PATH=\$GOPATH/bin:\$PATH; \
+                     cd example-project; \
+                     make --no-builtin-rules --file make.golang build-app; \
+                  ")
+             }
+             //
+             // NOTE: we have to install a docker CLI client into our env to do the next steps
+             stage('add-docker') {
+                 sh(" \
+                     cd example-project/_containerize; \
+                     ls -l /var/run/docker.sock; \
+                     wget -nv https://download.docker.com/linux/static/stable/x86_64/docker-17.06.1-ce.tgz; \
+                     tar -xzvf docker-17.06.1-ce.tgz docker/docker; \
+                     rm docker-17.06.1-ce.tgz; \
+                     mv docker/docker /usr/bin/docker; \
+                     chmod +x /usr/bin/docker; \
+                     docker version; \
+                  ")
+             }
+             // NOTE: the docker CLI client should still be in our env.
+             stage('containerize') {
+                 sh(" \
+                     cd example-project/_containerize; \
+                     docker version; \
+                     export DOCKER_REPO=quay.io/${quay_push_org}; \
+                     make --no-builtin-rules all; \
+                  ")
+             }
+             // NOTE: the docker CLI client should still be in our env.
+             stage('push') {
+                 sh(" \
+                     cd example-project/_containerize; \
+                     docker version; \
+                     export DOCKER_REPO=quay.io/${quay_push_org}; \
+                     make --no-builtin-rules push; \
+                  ")
+             }
+          }
+       }
+    }
+  }
+
+// vi: ft=groovy

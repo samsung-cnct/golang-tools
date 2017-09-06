@@ -63,7 +63,7 @@ function gexample::build::validate_tree {
     #       a normal project.  Please adjust accordingly.
     #       e.g. you probably want the following:
     #EXPECTED_BUILD_PATH="/src/github.com/samsung-cnct/YOUR-PROJECT"
-    EXPECTED_BUILD_PATH="/src/github.com/samsung-cnct/golang-tools/example-project"
+    #EXPECTED_BUILD_PATH="/src/github.com/samsung-cnct/golang-tools/example-project"
 
     if [ "${1}" != "${EXPECTED_BUILD_PATH}" ]; then
         gexample::build::error "Expected build path ${EXPECTED_BUILD_PATH} not found."
@@ -226,7 +226,7 @@ fi
 #
 #GOLANG_CONTAINER="golang:1.6"
 #  Make settable via args/env vars
-GOLANG_CONTAINER=${GOLANG_CONTAINER:-"quay.io/samsung_cnct/goglide:0.1.8"}
+GOLANG_CONTAINER=${GOLANG_CONTAINER:-"quay.io/samsung_cnct/goglide:1.8.3"}
 
 BUILD_VERSION="0.0.3"
 

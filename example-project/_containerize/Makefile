@@ -20,7 +20,7 @@ REPO := $(DOCKER_REPO)
 #
 #
 DOCKER_IMAGE := example-img
-SOURCE_APP := example-linux
+SOURCE_APP := exampleapp-linux
 
 repo-warning:
 	@echo "============================================================="

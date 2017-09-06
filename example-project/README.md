@@ -20,6 +20,25 @@ There are 3 locations in the file `build.sh` that you must edit to correct for y
 
 * `VERSION` should be set to your version
 * `IMAGE_NAME` should be set to your desired app name
+* Rename `apkg` to your first package name.
+
+### Step 5
+Rename `example` to your app name in 
+
+* `_containerize/Makefile`
+* `_containerize/Dockerfile`
+
+Rename `_containerize/example-demo.yaml` to your app name.
+
+### Step 6
+Rename `apkg` directory to your first package name. Fix the references to `apkg` in the corresponding golang code.
+
+### Step 7
+Add ay needed `cobra` command line commands to the `/cmd` directory.  However, you should implement the actual command logic in one of your packages, and have the cmds reference the other package.  i.e. You should not implement the logic directly in the `/cmd` source files if you can avoid it.
+
+### Step 8
+The `main` package is `main.go` at the root level of your project.  This file should not need many changes as most ways to execute your application will run through the `cobra` `/cmd` directory code.  Main just directs the processing to the cmd package.
+
 
 ### Final Step - Correct/Update These Files
 You should update/correct `README.md` and `DEVELOPMENT.md` as needed, correcting names etc.  You should also delete this whole **HOW TO CREATE YOUR PROJECT FROM THIS COPY** section here.
