@@ -1,63 +1,125 @@
 //
-// NOTE: this runs directly in the needed golang container (goglide), so we do not need to use all the indirection
-//       scripts to spin up the contiainer. .e.g. Makefile->build.sh
+// Example Golang build with docker image and push
 //
-podTemplate(label: 'OnboardingWorkflow', containers: [
-    containerTemplate(name: 'jnlp', image: 'quay.io/samsung_cnct/custom-jnlp:0.1', args: '${computer.jnlpmac} ${computer.name}'),
-    containerTemplate(name: 'example-project-golang', image: 'quay.io/samsung-cnct/goglide:0.1.8', ttyEnabled: true, command: 'cat', alwaysPullImage: true, resourceRequestMemory: '128Mi', resourceLimitMemory: '1Gi')\
-  ]){
+//  This version uses kubesh() instead of sh() to avoid a pipe error bug in the kubernetes plugin.
+//  It may be possible to revert to the normal version (Jenkinsfile.orig) if that but is fixed.
+//  NOTE: Keep this version in line with Jenkinsfile.kubesh
+//
+// Configuration variables
+github_org             = "samsung-cnct"
+quay_org               = "samsung_cnct"
+quay_push_org          = "bogus"
+//quay_push_org          = "samsung_cnct"
+golang_project_name    = "golang-tools"
+golang_project_path    = "src/github.com/${github_org}/${golang_project_name}"
 
-    node('OnboardingWorkflow') {
-     
-
-        customContainer ('example-project-golang') {
-            stage('checkout') {
-                checkout scm
-
-                // Ugly hack. The code must live in a path compatible with Golang's layout, and be resolvable within Go apps via its full form ("github.com/samsung-cnct/...").
-                // There may be alternatives that allow it to run from local path, especially vendoring-in dependencies via glide.
-                // Performing the checkout to an explicit directory DID NOT work because it was somehow pulling `master` instead.
-                kubesh "mkdir -p go/src/github.com/samsung-cnct/golang-tools/example-project/ && cp -r ./onboarding go/src/github.com/samsung-cnct/golang-tools/example-project
-
-            }
-
-            withEnv(["GOPATH=${WORKSPACE}/go/", "CHECKOUT_PATH=./go/src/github.com/samsung-cnct/golang-tools/example-project"]){
-                stage('docker env setup') {
-                    kubesh 'apt-get -qq update && apt-get -qq -y install build-essential'
-                }
-
-                stage('dependencies'){
-                    kubesh 'make -C ./go/src/github.com/samsung-cnct/golang-tools/example-project/make.golang vet'
-                    kubesh 'make -C ./go/src/github.com/samsung-cnct/golang-tools/example-project/make.golang lint'
-                }
-
-
-                stage('test'){ // In the Makefile this provides `lint` and `vet` too.
-                    kubesh 'make -C ./go/src/github.com/samsung-cnct/golang-tools/example-project/make.golang test'
-                }
-
-                stage('build'){
-                    kubesh 'make -C ./go/src/github.com/samsung-cnct/golang-tools/example-project/make.golang build-app'
-                }
-
-                stage('image'){
-                    kubesh 'make -C ./go/src/github.com/samsung-cnct/golang-tools/example-project/_containerize/ build-app'
-                }
-
-                stage('push'){
-                    kubesh 'make -C ./go/src/github.com/samsung-cnct/golang-tools/example-project/_containerize/ push'
-                }
-            }
-
-        }
-      
+podTemplate(label: 'example-proj', containers: [
+    containerTemplate(name: 'jnlp', image: "quay.io/${quay_org}/custom-jnlp:0.1", args: '${computer.jnlpmac} ${computer.name}'),
+    containerTemplate(name: 'goglide', image: "quay.io/${quay_org}/goglide:1.8.3", ttyEnabled: true, command: 'cat' ),
+    containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true)
+  ], volumes: [
+    hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
+    hostPathVolume(hostPath: '/var/lib/docker/scratch', mountPath: '/mnt/scratch'),
+    // The Following is needed to push to quay
+    secretVolume(mountPath: '/home/jenkins/.docker/', secretName: 'samsung-cnct-quay-robot-dockercfg')
+  ]) {
+    node('example-proj') {
+        customContainer('goglide') {
+              // NOTE: the current WORKSPACE is the correct value for the GOPATH, we will use that in later steps
+              //       We will put the go project in the correct location relative to our WORKSPACE (i.e. GOPATH)
+              dir("${golang_project_path}") {
+                  stage('Checkout') {
+                     checkout scm
+                     // retrieve the URI used for checking out the source
+                     // this assumes one branch with one uri
+                     git_uri = scm.getRepositories()[0].getURIs()[0].toString()
+                  }
+                  // Check the golang project.  
+                  // NOTE: none of these steps abort the pipeline by default.  But do provide info into the log
+                  //      Dumping a lot of info into the log for visibility
+                  stage('vet') {
+                      echo WORKSPACE
+                      echo pwd()
+                      kubesh(" \
+                          whoami; \
+                          df -h;  \
+                          export GOPATH=${WORKSPACE}; \
+                          export PATH=\$GOPATH/bin:\$PATH; \
+                          env|sort; \
+                          echo \"shell var \$GOPATH\"; \
+                          cd example-project; \
+                          echo \"=== go env ===\"; \
+                          go env; \
+                          make --version; \
+                          make --no-builtin-rules --file make.golang vet lint; \
+                       ")
+                  }
+                  // In golang we Unit test before we build the complete app
+                  stage('unit-test') {
+                      kubesh(" \
+                          export GOPATH=${WORKSPACE}; \
+                          export PATH=\$GOPATH/bin:\$PATH; \
+                          cd example-project; \
+                          make --no-builtin-rules --file make.golang test; \
+                       ")
+                  }
+                  // build the complete app (make puts the output into the correct location for the container build)
+                  stage('build') {
+                      kubesh(" \
+                          export GOPATH=${WORKSPACE}; \
+                          export PATH=\$GOPATH/bin:\$PATH; \
+                          cd example-project; \
+                          make --no-builtin-rules --file make.golang build-app; \
+                       ")
+                  }
+                  //
+                  // NOTE: we have to install a docker CLI client into our env to do this.
+                  stage('add-docker') {
+                      kubesh(" \
+                          cd example-project/_containerize; \
+                          ls -l /var/run/docker.sock; \
+                          wget -nv https://download.docker.com/linux/static/stable/x86_64/docker-17.06.1-ce.tgz; \
+                          tar -xzvf docker-17.06.1-ce.tgz docker/docker; \
+                          rm docker-17.06.1-ce.tgz; \
+                          mv docker/docker /usr/bin/docker; \
+                          chmod +x /usr/bin/docker; \
+                          docker version; \
+                       ")
+                  }
+                  // NOTE: the docker CLI client should still be in our env.
+                  stage('containerize') {
+                      kubesh(" \
+                          cd example-project/_containerize; \
+                          docker version; \
+                          export DOCKER_REPO=quay.io/${quay_push_org}; \
+                          make --no-builtin-rules all; \
+                       ")
+                  }
+                  // NOTE: the docker CLI client should still be in our env.
+                  stage('push') {
+                      kubesh(" \
+                          cd example-project/_containerize; \
+                          docker version; \
+                          export DOCKER_REPO=quay.io/${quay_push_org}; \
+                          make --no-builtin-rules push; \
+                       ")
+                  }
+//            stage('Publish') {
+//              if (env.BRANCH_NAME == "master" && git_uri.contains(github_org)) {
+//                kubesh "docker tag k2-tools:${env.JOB_BASE_NAME}.${env.BUILD_ID} quay.io/${quay_org}/k2-tools:latest"
+//                kubesh "docker push quay.io/${quay_org}/k2-tools:latest"
+//              } else {
+//                echo "Not pushing to docker repo:\n    BRANCH_NAME='${env.BRANCH_NAME}'\n    git_uri='${git_uri}'"
+//              }
+//            }
+          }
+       }
     }
   }
 
-
-
 def kubesh(command) {
   if (env.CONTAINER_NAME) {
+    echo env.CONTAINER_NAME
     if ((command instanceof String) || (command instanceof GString)) {
       command = kubectl(command)
     }
@@ -66,12 +128,14 @@ def kubesh(command) {
       command["script"] = kubectl(command["script"])
     }
   }
-
+  echo "================="
+  echo command
   sh(command)
 }
 
 def kubectl(command) {
-  "kubectl exec -i ${env.HOSTNAME} -c ${env.CONTAINER_NAME} -- /bin/sh -c 'cd ${env.WORKSPACE} && export GOPATH=${env.GOPATH} CHECKOUT_PATH=${env.CHECKOUT_PATH} && ${command}'"
+  "kubectl exec -i ${env.HOSTNAME} -c ${env.CONTAINER_NAME} -- /bin/sh -c 'cd ${pwd()} && ${command}'"
+  //"kubectl exec -i ${env.HOSTNAME} -c ${env.CONTAINER_NAME} -- /bin/sh -c 'cd ${env.WORKSPACE} && ${command}'"
 }
 
 def customContainer(String name, Closure body) {
@@ -79,3 +143,5 @@ def customContainer(String name, Closure body) {
     body()
   }
 }
+
+// vi: ft=groovy
