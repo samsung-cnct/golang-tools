@@ -4,8 +4,9 @@
 # This makefile assumes that docker is installed
 #
 # 5/5/2016 mln
+# 9/13/2017 ael:updating to use go v1.9.0
 #
-VERSION := 1.8.3
+VERSION := 1.9.0
 #
 # do some repo evals... want everyone to use their own, unless building for the team
 #
