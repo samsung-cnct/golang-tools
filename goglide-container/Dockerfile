@@ -1,4 +1,4 @@
-FROM golang:1.8.3
+FROM golang:1.9.0
 MAINTAINER Mikel Nelson <github@mikelnelson.net>
 
 # NOTE: should use: $(dpkg --print-architecture)  vs amd64
