@@ -27,14 +27,14 @@ podTemplate(label: "${project_name}", containers: [
         // build new version of kraken-tools image on 'docker' container
         stage('Build') {
           kubesh(" \
-              cd ${project_subir}; \
+              cd ${project_subdir}; \
               docker build -t ${project_name}:${env.JOB_BASE_NAME}.${env.BUILD_ID} .; \
           ")
         }
 
 //        stage('Test') {
 //          kubesh(" \
-//              cd ${project_subir}; \
+//              cd ${project_subdir}; \
 //              //do stuff/re-write a local configuration file to reference the newly built docker image; \
 //          ")
 //        }
@@ -43,7 +43,7 @@ podTemplate(label: "${project_name}", containers: [
         stage('Publish') {
           if (git_branch.contains(publish_branch) && git_uri.contains(github_org)) {
             kubesh(" \
-                cd ${project_subir}; \
+                cd ${project_subdir}; \
                 docker tag ${project_name}:${env.JOB_BASE_NAME}.${env.BUILD_ID} quay.io/${quay_org}/${project_name}:${image_tag}; \
                 docker push quay.io/${quay_org}/${project_name}:${image_tag}; \
             ")
