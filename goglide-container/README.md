@@ -79,3 +79,18 @@ docker run \
         make --file ${MAKEFILE_NAME} ${MAKE_ARGS};"
 ````
 	
+## Creating A New Release
+
+When a new version of golang is desired, or any other version of the included files, a new container version should be built and pushed to quay.io.
+### Development/Test Build
+* Update Version in `Dockerfile`
+* Update Version in `Makefile`
+* Set env var `DOCKER_REPO=quay.io/<your repo>`
+* `make clean; make all; make push`  - NOTE: this will push to your personal repo as `goglide:<ver>`
+
+### Release Build
+* Checkin and merge (ver PR) the version changes.
+* create a git tag with the version (e.g. `v1.9.1`).
+* run the Jenkins build job `https://common-jenkins.kubeme.io/job/goglide-rel/` by hand and select the tag you just created.
+* the Jenkins job will build, tag, and push the new container to `quay.io/samsung_cnct/goglide:<version>`
+
