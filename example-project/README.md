@@ -7,6 +7,10 @@ Example golang project to start with.
 ### Step 1 - Copy The Contents to Your Repository
 This example project is designed to be copied directly into your base repository directory.  i.e. The contents of this directoy should be copied to your `github.com/samsung-cnct/<my project>`.  You do not want to create this as a subdirectory of your repository. e.g. `github.com/samsung-cnct/<my project>/example-proj`
 
+NOTE: If you installed golang and go tools(glide) on your mac, the GOPATH base directory of your
+project should be a different path from your mac GOPATH so that linux go tools will work, and to keep linux binaries
+separate from OSX binaries.
+
 ### Step 2 - Fix the Names and Paths in build.sh
 There are 3 locations in the file `build.sh` that you must edit to correct for your repository name and relative depth.   These locations are marked with `ATTENTON!`.  The comments in `build.sh` explain this also.
 

@@ -1,5 +1,5 @@
 
-.PHONY: all biuld-all build-app build-image repo-warning clean-app push clean golang-build-container echovars vet clean-image clean-all very-clean
+.PHONY: all build-all build-app build-image repo-warning clean-app push clean golang-build-container echovars vet clean-image clean-all very-clean
 #
 # This is the Makefile to build the golang components.
 # It is normally run in a docker container for golang builds.
