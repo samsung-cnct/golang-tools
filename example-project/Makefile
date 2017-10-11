@@ -19,7 +19,7 @@ REPO := $(DOCKER_REPO)
 #
 #
 #
-# MAKE SUTE TO FILTER OUT THE CONTAINTER START...just in case
+# MAKE SURE TO FILTER OUT THE CONTAINER START...just in case
 #
 ARGLIST := $(filter-out golang-build-container,$(MAKECMDGOALS))
 LOCALARGLIST := $(filter golang-build-container, $(MAKECMDGOALS))
