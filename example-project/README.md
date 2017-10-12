@@ -5,74 +5,86 @@ Example golang project to start with.
 
 ## HOW TO CREATE YOUR PROJECT FROM THIS COPY
 ### Step 1 - Copy The Contents to Your Repository
-This example project is designed to be copied directly into your base repository directory.  i.e. The contents of this directoy should be copied to your `github.com/samsung-cnct/<my project>`.  You do not want to create this as a subdirectory of your repository. e.g. `github.com/samsung-cnct/<my project>/example-proj`
+This example project is designed to be copied directly into your base repository directory, .i.e., the contents of this 
+directory should be copied to your `github.com/samsung-cnct/<my project>`.  You do not want to create this as a 
+subdirectory of your repository. e.g. `github.com/samsung-cnct/<my project>/example-proj`
 
-NOTE: If you installed golang and go tools(glide) on your mac, the GOPATH base directory of your
-project should be a different path from your mac GOPATH so that linux go tools will work, and to keep linux binaries
+NOTE: If you installed golang and go tools(glide) on your mac, the `GOPATH` base directory of your
+project should be a different path from your mac's `GOPATH` so that linux go tools will work, and to keep linux binaries
 separate from OSX binaries.
 
 ### Step 2 - Fix the Names and Paths in build.sh
-There are 3 locations in the file `build.sh` that you must edit to correct for your repository name and relative depth.   These locations are marked with `ATTENTON!`.  The comments in `build.sh` explain this also.
+There are three locations in the file `build.sh` that you must edit to correct for your repository name and 
+relative depth. These locations are marked with `ATTENTON!`.  The comments in `build.sh` explain this also.
 
 ### Step 3 - Fix the Makefile
 * You must change the `VERSION` to match your version scheme.
-* You must change the `DOCKER_IMAGE` to match you project executable/conatianer name.
-* It is recommended that you do NOT change `DEFAULT_REPO` and require anyone building this to set `DOCKER_REPO` in their environment variables.  e.g. `export DOCKER_REPO=quay.io/myaccnt`
+* You must change the `DOCKER_IMAGE` to match you project executable/container name.
+* It is recommended that you do NOT change `DEFAULT_REPO` and require anyone building this to 
+set `DOCKER_REPO` in their environment variables, e.g., `export DOCKER_REPO=quay.io/myaccnt`
 
 ### Step 4 - Fix make.golang
-`make.golang` is the real Makefile for this app.  You will add your paths targets to this file as needed.   It is a starting point.   The following should be initially updated:
+`make.golang` is the real Makefile for the app. You will add your path's targets to this file as needed.
+It is a starting point. The following should be initially updated:
 
 * `VERSION` should be set to your version
 * `IMAGE_NAME` should be set to your desired app name
 * Rename `apkg` to your first package name.
 
 ### Step 5
-Rename `example` to your app name in 
+Change the value `example` to that of your app's name in 
 
 * `_containerize/Makefile`
 * `_containerize/Dockerfile`
 
-Rename `_containerize/example-demo.yaml` to your app name.
+In addition, rename `_containerize/example-demo.yaml` to your app's name.
 
 ### Step 6
 Rename `apkg` directory to your first package name. Fix the references to `apkg` in the corresponding golang code.
 
 ### Step 7
-Add ay needed `cobra` command line commands to the `/cmd` directory.  However, you should implement the actual command logic in one of your packages, and have the cmds reference the other package.  i.e. You should not implement the logic directly in the `/cmd` source files if you can avoid it.
+Add any needed `cobra` command lines to the `/cmd` directory. However, you should implement the actual 
+command logic in one of your packages, and have the cmds reference the other package, i.e., you should 
+not implement the logic directly in the `/cmd` source files if you can avoid it.
 
 ### Step 8
-The `main` package is `main.go` at the root level of your project.  This file should not need many changes as most ways to execute your application will run through the `cobra` `/cmd` directory code.  Main just directs the processing to the cmd package.
-
+The `main` package is `main.go` at the root level of your project. 
+The file should not need many changes as most ways to execute your application will run through the `cobra` `/cmd` 
+directory code. The main file just directs the processing to the cmd package.
 
 ### Final Step - Correct/Update These Files
-You should update/correct `README.md` and `DEVELOPMENT.md` as needed, correcting names etc.  You should also delete this whole **HOW TO CREATE YOUR PROJECT FROM THIS COPY** section here.
+You should update/correct `README.md` and `DEVELOPMENT.md` as needed, correcting names, etc. You should also delete 
+this whole **HOW TO CREATE YOUR PROJECT FROM THIS COPY** section here.
 ## END OF HOW TO CREATE YOUR PROJECT SECTION
 
+## Purpose
+The project here is presented to be a source of a framework that can be used to populate a new golang project repo. As 
+such, it is not runnable as is. You must copy all the content here into your repo and rename items appropriately.
 
-### Purpose
-This is presented to be a source of a framework that can be used to populate a new golang project repo.  As such, it is not runnable as is.   You must copy this into your repo and rename items appropriately.
+## Summary
+The goal is to have this "*go get-able*" so it is usable as a template by other golang projects.
 
-### Summary
-The goal is to have this "*go get-able*" so it is usable by other golang projects.
+## Build
+This is setup to use a golang docker container to do all golang "go" commands. The current directory is mounted into 
+the container, but at a location that facilitates "*go get*". 
 
-### Build
-This is setup to use a golang docker container to do all golang "go" commands.  The current directory is mounted into the container, but at a location that facilitates "*go get*". 
-
-### Dependency Management
-The hope is to use whatever the current best practice dependency manager is.  Howeever, at the time of this update (1/2017) managing the dependencies in /vendor by hand and checking them in to source control was determined to be the most reliable.  
+## Dependency Management
+The hope is to use whatever the current best practice dependency manager is. However, at the time of this 
+update (1/2017) managing the dependencies in /vendor by hand and checking them in to source control 
+was determined to be the most reliable.  
 
 DEPRECATED BELOW...but may be relavent again:
-It has been determined to use [glide](https://github.com/Masterminds/glide) as the package management tools.  A special docker golang build image has been created (see [samsung-cnct/golang-tools/goglide-container](https://github.com/samsung-cnct/golang-tools/tree/master/goglide-container) ).
+It has been determined to use [glide](https://github.com/Masterminds/glide) as the package management tools. A special 
+docker golang build image has been created 
+(see [samsung-cnct/golang-tools/goglide-container](https://github.com/samsung-cnct/golang-tools/tree/master/goglide-container)).
 
-### main/cmd Management
-The golang *main* and *cmd* pkgs are build using the [cobra](https://github.com/spf13/cobra) pkg.  Additions to *cmd* may be made by hand, or with the *cobra* template generator CLI.
+## Management of main and cmd packages 
+The golang *main* and *cmd* pkgs are built using the [cobra](https://github.com/spf13/cobra) pkg. Additions to *cmd* 
+may be made by hand, or with the *cobra* template generator CLI.
 
-
-
-#### Directory Setup
-
-**IMPORTANT** 
-
+### Directory Setup
+**IMPORTANT**
+ 
 When doing development, the git repository HAS to be set up as follows:
 
 ````
@@ -99,7 +111,6 @@ $(GOPATH)
 ````
 
 #### Build
-
 Prerequisites: docker running on your machine. (os-x docker, docker-machine, boot2docker, etc)
 
 Build execution:
@@ -119,10 +130,12 @@ Build execution:
 
 * `make.golang` - The actual golang builder.
 * `_containerize/Makefile` - Builds the docker image.
-* `build.sh` - Sets up the environment and starts the golang container.  Builds can be run directly from this script.  `--kube` arg directs arguments to the `_containerized/Makefile`
-* `Makefile` - Facade to allow running `build.sh` via a `make` command instead (when using defaults of `build.sh`) (NOTE: This only works with `make.golang`, not with `_containerize/Makefile`).  E.g.  `make test` == `./build.sh -- test`.
+* `build.sh` - Sets up the environment and starts the golang container. Builds can be run directly from this 
+script, the `--kube` arg directs arguments to the `_containerized/Makefile`.
+* `Makefile` - Facade to allow running `build.sh` via a `make` command instead (when using defaults of `build.sh`) .
+(NOTE: This only works with `make.golang`, not with `_containerize/Makefile`), e.g.,  `make test` == `./build.sh -- test`.
 
-###### build.sh
+##### build.sh
 
 ````
 > Runs a golang build docker container and runs Makefile
@@ -157,29 +170,27 @@ Targets:
 	* `./coverage-all.out`
 	* `./coverage-all.html` 
 
-Dependency Management (if /vendor dir is not checked-in):
-
-* `dep`         - currently not implemented
-* `dep-update`         - currently not implemented
-* `dep-update-quick`         - currently not implemented
+Dependency Management (**if /vendor dir is not checked-in**):
+* `dep` - currently not implemented
+* `dep-update` - currently not implemented
+* `dep-update-quick` - currently not implemented
 
 Minor Targets
-
 * `vet`
 * `lint`
 
 #### Local golang Packages
 
-`main.go`
-
-* `./cmd` (CLI managed by corbra)
-* `./apkg` 
+* `main.go`
+* `./cmd/` (CLI managed by corbra)
+* `./apkg`
+* `/vendor` (if using vendor to manage external packages) 
 
 ### Initial Development Setup
 * Create the dev area and clone the repo (outlined above)
-* Fill the vendor directory with the needed dependencies: `make dep`(ONLY IF VENDOR IS NOT CHECKED-IN)
+* Fill the vendor directory with the needed dependencies: `make dep` **(ONLY IF VENDOR IS NOT CHECKED-IN)**
 * Validate it is all setup correctly: `make test`
-* go Documents: `make doc`
+* go documents: `make doc`
 * Create os-x runnable app: `make build-darwin`
 * Create app for docker image: `make build-app`
 * Create and push docker image: `build.sh --kube -- all push`
